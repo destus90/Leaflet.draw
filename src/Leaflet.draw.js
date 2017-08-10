@@ -1,3 +1,4 @@
+var L = require('leaflet');
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
