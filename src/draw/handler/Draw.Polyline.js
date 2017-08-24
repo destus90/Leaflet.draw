@@ -333,7 +333,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	// calculate if we are currently within close enough distance
-	// of the closing point (first point for shapes, last point for lines)
+	// of the closing point (last point for shapes, last point for lines)
 	// this is semi-ugly code but the only reliable way i found to get the job done
 	// note: calculating point.distanceTo between mouseDownOrigin and last marker did NOT work
 	_calculateFinishDistance: function (potentialLatLng) {
@@ -343,7 +343,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 				if (this.type === L.Draw.Polyline.TYPE) {
 					finishMarker = this._markers[this._markers.length - 1];
 				} else if (this.type === L.Draw.Polygon.TYPE) {
-					finishMarker = this._markers[0];
+					finishMarker = this._markers[this._markers.length - 1];
 				} else {
 					return Infinity;
 				}
@@ -466,9 +466,6 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	_getTooltipText: function () {
 		var showLength = this.options.showLength,
 			labelText, distanceStr;
-		if (L.Browser.touch) {
-			showLength = false; // if there's a better place to put this, feel free to move it
-		}
 		if (this._markers.length === 0) {
 			labelText = {
 				text: L.drawLocal.draw.handlers.polyline.tooltip.start

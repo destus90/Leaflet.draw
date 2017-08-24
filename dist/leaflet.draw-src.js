@@ -1,5 +1,5 @@
 /*
- Leaflet.draw 0.4.10+b994ebe, a plugin that adds drawing and editing tools to Leaflet powered maps.
+ Leaflet.draw 0.4.10+7b48404, a plugin that adds drawing and editing tools to Leaflet powered maps.
  (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
 
  https://github.com/Leaflet/Leaflet.draw
@@ -9,7 +9,7 @@
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
-L.drawVersion = "0.4.10+b994ebe";
+L.drawVersion = "0.4.10+7b48404";
 /**
  * @class L.Draw
  * @aka Draw
@@ -791,7 +791,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	// calculate if we are currently within close enough distance
-	// of the closing point (first point for shapes, last point for lines)
+	// of the closing point (last point for shapes, last point for lines)
 	// this is semi-ugly code but the only reliable way i found to get the job done
 	// note: calculating point.distanceTo between mouseDownOrigin and last marker did NOT work
 	_calculateFinishDistance: function (potentialLatLng) {
@@ -801,7 +801,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 				if (this.type === L.Draw.Polyline.TYPE) {
 					finishMarker = this._markers[this._markers.length - 1];
 				} else if (this.type === L.Draw.Polygon.TYPE) {
-					finishMarker = this._markers[0];
+					finishMarker = this._markers[this._markers.length - 1];
 				} else {
 					return Infinity;
 				}
@@ -924,9 +924,6 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	_getTooltipText: function () {
 		var showLength = this.options.showLength,
 			labelText, distanceStr;
-		if (L.Browser.touch) {
-			showLength = false; // if there's a better place to put this, feel free to move it
-		}
 		if (this._markers.length === 0) {
 			labelText = {
 				text: L.drawLocal.draw.handlers.polyline.tooltip.start
@@ -1086,18 +1083,14 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 	_updateFinishHandler: function () {
 		var markerCount = this._markers.length;
 
-		// The first marker should have a click handler to close the polygon
-		if (markerCount === 1) {
-			this._markers[0].on('click', this._finishShape, this);
+		// The last marker should have a click handler to close the polygon
+		if (markerCount > 1) {
+			this._markers[markerCount - 1].on('click', this._finishShape, this);
 		}
 
-		// Add and update the double click handler
+		// Remove the old marker click handler (as only the last point should close the polygon)
 		if (markerCount > 2) {
-			this._markers[markerCount - 1].on('dblclick', this._finishShape, this);
-			// Only need to remove handler if has been added before
-			if (markerCount > 3) {
-				this._markers[markerCount - 2].off('dblclick', this._finishShape, this);
-			}
+			this._markers[markerCount - 2].off('click', this._finishShape, this);
 		}
 	},
 

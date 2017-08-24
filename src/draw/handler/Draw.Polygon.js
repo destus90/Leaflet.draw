@@ -44,18 +44,14 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 	_updateFinishHandler: function () {
 		var markerCount = this._markers.length;
 
-		// The first marker should have a click handler to close the polygon
-		if (markerCount === 1) {
-			this._markers[0].on('click', this._finishShape, this);
+		// The last marker should have a click handler to close the polygon
+		if (markerCount > 1) {
+			this._markers[markerCount - 1].on('click', this._finishShape, this);
 		}
 
-		// Add and update the double click handler
+		// Remove the old marker click handler (as only the last point should close the polygon)
 		if (markerCount > 2) {
-			this._markers[markerCount - 1].on('dblclick', this._finishShape, this);
-			// Only need to remove handler if has been added before
-			if (markerCount > 3) {
-				this._markers[markerCount - 2].off('dblclick', this._finishShape, this);
-			}
+			this._markers[markerCount - 2].off('click', this._finishShape, this);
 		}
 	},
 
