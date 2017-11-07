@@ -1,5 +1,5 @@
 /*
- Leaflet.draw 0.4.10+7b48404, a plugin that adds drawing and editing tools to Leaflet powered maps.
+ Leaflet.draw 0.4.10+e2c9bab, a plugin that adds drawing and editing tools to Leaflet powered maps.
  (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
 
  https://github.com/Leaflet/Leaflet.draw
@@ -9,7 +9,7 @@
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
-L.drawVersion = "0.4.10+7b48404";
+L.drawVersion = "0.4.10+e2c9bab";
 /**
  * @class L.Draw
  * @aka Draw
@@ -1714,10 +1714,10 @@ L.Edit.Poly = L.Handler.extend({
 	// Compatibility method to normalize Poly* objects
 	// between 0.7.x and 1.0+
 	_defaultShape: function () {
-		if (!L.Polyline._flat) {
+		if (!L.LineUtil.isFlat) {
 			return this._poly._latlngs;
 		}
-		return L.Polyline._flat(this._poly._latlngs) ? this._poly._latlngs : this._poly._latlngs[0];
+		return L.LineUtil.isFlat(this._poly._latlngs) ? this._poly._latlngs : this._poly._latlngs[0];
 	},
 
 	_eachVertexHandler: function (callback) {
@@ -1809,10 +1809,10 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
 	// Compatibility method to normalize Poly* objects
 	// between 0.7.x and 1.0+
 	_defaultShape: function () {
-		if (!L.Polyline._flat) {
+		if (!L.LineUtil.isFlat) {
 			return this._latlngs;
 		}
-		return L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return L.LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// @method addHooks(): void
