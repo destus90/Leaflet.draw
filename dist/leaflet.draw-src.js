@@ -1,5 +1,5 @@
 /*
- Leaflet.draw 0.4.10+e2c9bab, a plugin that adds drawing and editing tools to Leaflet powered maps.
+ Leaflet.draw 0.4.10+04a0619, a plugin that adds drawing and editing tools to Leaflet powered maps.
  (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
 
  https://github.com/Leaflet/Leaflet.draw
@@ -9,7 +9,7 @@
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
-L.drawVersion = "0.4.10+e2c9bab";
+L.drawVersion = "0.4.10+04a0619";
 /**
  * @class L.Draw
  * @aka Draw
@@ -363,8 +363,7 @@ L.Draw = L.Draw || {};
  * @aka Draw.Feature
  */
 L.Draw.Feature = L.Handler.extend({
-	includes: L.Mixin.Events,
-
+	
 	// @method initialize(): void
 	initialize: function (map, options) {
 		this._map = map;
@@ -377,6 +376,13 @@ L.Draw.Feature = L.Handler.extend({
 			options.shapeOptions = L.Util.extend({}, this.options.shapeOptions, options.shapeOptions);
 		}
 		L.setOptions(this, options);
+		var version = L.version.split(".");
+        //If Version is >= 1.2.0
+        if(parseInt(version[0],10) === 1 && parseInt(version[1],10) >= 2 ) {
+            L.Draw.Feature.include(L.Evented.prototype);
+        } else {
+            L.Draw.Feature.include(L.Mixin.Events);
+        }
 	},
 
 	// @method enable(): void
@@ -3455,7 +3461,6 @@ L.Map.addInitHook(function () {
  * ```
  */
 L.Toolbar = L.Class.extend({
-	includes: [L.Mixin.Events],
 
 	// @section Methods for modifying the toolbar
 
@@ -3467,6 +3472,13 @@ L.Toolbar = L.Class.extend({
 		this._modes = {};
 		this._actionButtons = [];
 		this._activeMode = null;
+		var version = L.version.split(".");
+        //If Version is >= 1.2.0
+        if(parseInt(version[0],10) === 1 && parseInt(version[1],10) >= 2 ) {
+            L.Toolbar.include(L.Evented.prototype);
+        } else {
+            L.Toolbar.include(L.Mixin.Events);
+        }
 	},
 
 	// @method enabled(): boolean
@@ -4178,8 +4190,6 @@ L.EditToolbar.Edit = L.Handler.extend({
 		TYPE: 'edit'
 	},
 
-	includes: L.Mixin.Events,
-
 	// @method intialize(): void
 	initialize: function (map, options) {
 		L.Handler.prototype.initialize.call(this, map);
@@ -4197,6 +4207,14 @@ L.EditToolbar.Edit = L.Handler.extend({
 
 		// Save the type so super can fire, need to do this as cannot do this.TYPE :(
 		this.type = L.EditToolbar.Edit.TYPE;
+		
+		var version = L.version.split(".");
+        //If Version is >= 1.2.0
+        if(parseInt(version[0],10) === 1 && parseInt(version[1],10) >= 2 ) {
+            L.EditToolbar.Edit.include(L.Evented.prototype);
+        } else {
+            L.EditToolbar.Edit.include(L.Mixin.Events);
+        }
 	},
 
 	// @method enable(): void
@@ -4465,8 +4483,6 @@ L.EditToolbar.Delete = L.Handler.extend({
 		TYPE: 'remove' // not delete as delete is reserved in js
 	},
 
-	includes: L.Mixin.Events,
-
 	// @method intialize(): void
 	initialize: function (map, options) {
 		L.Handler.prototype.initialize.call(this, map);
@@ -4482,6 +4498,13 @@ L.EditToolbar.Delete = L.Handler.extend({
 
 		// Save the type so super can fire, need to do this as cannot do this.TYPE :(
 		this.type = L.EditToolbar.Delete.TYPE;
+		var version = L.version.split(".");
+        //If Version is >= 1.2.0
+        if(parseInt(version[0],10) === 1 && parseInt(version[1],10) >= 2 ) {
+            L.EditToolbar.Delete.include(L.Evented.prototype);
+        } else {
+            L.EditToolbar.Delete.include(L.Mixin.Events);
+        }
 	},
 
 	// @method enable(): void

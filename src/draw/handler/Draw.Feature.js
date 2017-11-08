@@ -5,8 +5,7 @@ L.Draw = L.Draw || {};
  * @aka Draw.Feature
  */
 L.Draw.Feature = L.Handler.extend({
-	includes: L.Mixin.Events,
-
+	
 	// @method initialize(): void
 	initialize: function (map, options) {
 		this._map = map;
@@ -19,6 +18,13 @@ L.Draw.Feature = L.Handler.extend({
 			options.shapeOptions = L.Util.extend({}, this.options.shapeOptions, options.shapeOptions);
 		}
 		L.setOptions(this, options);
+		var version = L.version.split(".");
+        //If Version is >= 1.2.0
+        if(parseInt(version[0],10) === 1 && parseInt(version[1],10) >= 2 ) {
+            L.Draw.Feature.include(L.Evented.prototype);
+        } else {
+            L.Draw.Feature.include(L.Mixin.Events);
+        }
 	},
 
 	// @method enable(): void
