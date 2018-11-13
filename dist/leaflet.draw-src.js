@@ -1,5 +1,5 @@
 /*
- Leaflet.draw 0.4.10+04a0619, a plugin that adds drawing and editing tools to Leaflet powered maps.
+ Leaflet.draw 0.4.10+ad36ba5, a plugin that adds drawing and editing tools to Leaflet powered maps.
  (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
 
  https://github.com/Leaflet/Leaflet.draw
@@ -9,7 +9,7 @@
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
-L.drawVersion = "0.4.10+04a0619";
+L.drawVersion = "0.4.10+ad36ba5";
 /**
  * @class L.Draw
  * @aka Draw
@@ -1760,7 +1760,14 @@ L.Edit.Poly = L.Handler.extend({
 	_initHandlers: function () {
 		this._verticesHandlers = [];
 		for (var i = 0; i < this.latlngs.length; i++) {
-			this._verticesHandlers.push(new L.Edit.PolyVerticesEdit(this._poly, this.latlngs[i], this.options));
+            if (!L.LineUtil.isFlat(this.latlngs[i])) {
+                // multipolygon
+                for (var j = 0; j < this.latlngs[i].length; j++) {
+                    this._verticesHandlers.push(new L.Edit.PolyVerticesEdit(this._poly, this.latlngs[i][j], this.options));
+                }
+            } else {
+                this._verticesHandlers.push(new L.Edit.PolyVerticesEdit(this._poly, this.latlngs[i], this.options));
+            }
 		}
 	},
 
