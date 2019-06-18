@@ -1,5 +1,5 @@
 /*
- Leaflet.draw 0.4.10+ad36ba5, a plugin that adds drawing and editing tools to Leaflet powered maps.
+ Leaflet.draw 0.4.10+7af62b9, a plugin that adds drawing and editing tools to Leaflet powered maps.
  (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
 
  https://github.com/Leaflet/Leaflet.draw
@@ -9,7 +9,7 @@
 /**
  * Leaflet.draw assumes that you have already included the Leaflet library.
  */
-L.drawVersion = "0.4.10+ad36ba5";
+L.drawVersion = "0.4.10+7af62b9";
 /**
  * @class L.Draw
  * @aka Draw
@@ -3016,7 +3016,7 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 	// @method formattedNumber(n, precision): string
 	// Returns n in specified number format (if defined) and precision
 	formattedNumber: function (n, precision) {
-		var formatted = n.toFixed(precision),
+		var formatted = parseFloat(n).toFixed(precision),
 			format = L.drawLocal.format && L.drawLocal.format.numeric,
 			delimiters = format && format.delimiters,
 			thousands = delimiters && delimiters.thousands,
@@ -3039,7 +3039,8 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 	// The value will be rounded as defined by the precision option object.
 	readableArea: function (area, isMetric, precision) {
 		var areaStr,
-			units, 
+			units,
+			type,
 			precision = L.Util.extend({}, defaultPrecision, precision);
 
 		if (isMetric) {
