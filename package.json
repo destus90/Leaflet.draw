@@ -1,8 +1,12 @@
 {
-  "name": "leaflet-draw",
+  "name": "@technocom/leaflet-draw",
   "version": "0.4.10",
   "description": "Vector drawing plugin for Leaflet",
+  "publishConfig": {
+    "registry": "http://tkrepo.technocom.tech/repository/tk-npm/"
+  },
   "devDependencies": {
+    "del-cli": "^3.0.1",
     "eslint": "^3.5.0 <3.6.0",
     "eslint-config-mourner": "^2.0.1",
     "git-rev": "^0.2.1",
@@ -39,11 +43,14 @@
     "build": "jake build -f ./Jakefile.js",
     "test": "jake test",
     "docs": "jake docs",
-    "release": "./build/publish.sh"
+    "release": "npm pack && npm publish && del *.tgz"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Leaflet/Leaflet.draw.git"
+    "url": "https://gogs.technocom.tech/AppliedSoftware/Leaflet.draw"
+  },
+  "bugs": {
+    "url": "https://gogs.technocom.tech/AppliedSoftware/Leaflet.draw/issues"
   },
   "keywords": [
     "maps",
